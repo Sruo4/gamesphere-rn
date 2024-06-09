@@ -3,14 +3,14 @@ import "@tamagui/core/reset.css";
 import { Button, YStack, Text } from "tamagui";
 
 import { TamaguiProvider } from "tamagui";
-import config from "./tamagui.config";
+import config from "../../tamagui.config";
 
 export default function App() {
   return (
     <TamaguiProvider config={config}>
       <YStack style={styles.container}>
         <YStack padding="$3">
-          <Text size="$4">Hello, Tamagui!</Text>
+          <Text theme="blue">Hello, Tamagui!</Text>
           <Button theme="blue">Click me!</Button>
         </YStack>
       </YStack>
