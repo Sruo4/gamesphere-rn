@@ -5,7 +5,7 @@ import { Button, YStack, Text } from "tamagui";
 import { TamaguiProvider } from "tamagui";
 import config from "../../tamagui.config";
 
-export default function App() {
+export default function HomeScreen() {
   return (
     <TamaguiProvider config={config}>
       <YStack style={styles.container}>

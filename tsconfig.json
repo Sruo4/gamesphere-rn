@@ -1,7 +1,9 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    // 启用严格模式
     "strict": true,
+    // 模块解析的路径映射配置
     "paths": {
       "@/*": [
         "./*"
