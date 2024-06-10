@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, TextInput, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import FastImage from "react-native-fast-image";
-
 
 export default function SearchPage() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -104,7 +102,7 @@ export default function SearchPage() {
                 {searchResults.length > 0 ? (
                     searchResults.map(result => (
                         <View key={result.id} style={{ flexDirection: "row", padding: 10, backgroundColor: "#fff", marginBottom: 10, borderRadius: 10 }}>
-                            <FastImage source={{ uri: result.image }} style={{ width: 50, height: 50, marginRight: 10 }} />
+                            <Image source={{ uri: result.image }} style={{ width: 50, height: 50, marginRight: 10 }} />
                             <View>
                                 <Text style={{ fontSize: 16, fontWeight: "bold" }}>{result.title}</Text>
                                 <Text>{result.description}</Text>
