@@ -16,7 +16,13 @@
     "react": "18.2.0",
     "react-native": "0.74.2",
     "react-native-paper": "^5.12.3",
+<<<<<<< HEAD
+    "react-native-reanimated": "~3.10.1",
+    "react-native-webview": "^13.10.3",
+    "tamagui": "^1.100.3"
+=======
     "react-native-reanimated": "~3.10.1"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
