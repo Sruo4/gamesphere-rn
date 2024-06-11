@@ -26,7 +26,7 @@ export default function GameCard() {
         );
         setUserData(response.data.response.players[0]);
       } catch (error: any) {
-        setLoadingUser(error);
+        setErrorUser(error);
       } finally {
         setLoadingUser(false);
       }
@@ -45,7 +45,6 @@ export default function GameCard() {
           "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?access_token=eyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVFMF8yNDg5MzZFRl9GMDc3MyIsICJzdWIiOiAiNzY1NjExOTkxNzgzNjg5NjgiLCAiYXVkIjogWyAid2ViOnN0b3JlIiBdLCAiZXhwIjogMTcxODE3NDc3OCwgIm5iZiI6IDE3MDk0NDczOTcsICJpYXQiOiAxNzE4MDg3Mzk3LCAianRpIjogIjBFRjFfMjQ4OTM2RjNfRDFGOUQiLCAib2F0IjogMTcxODA4NzM5NywgInJ0X2V4cCI6IDE3MzYyMzIwMjcsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICIxMTguMTcwLjkyLjIzNyIsICJpcF9jb25maXJtZXIiOiAiMTE4LjE3MC45Mi4yMzciIH0.Eu_7FCT3ISoRAYtGIBHpWjZhoOb90IqboXosawfzDuzSZVkKg8FeoJipoxSQUUSR3Kl-xi-RemHA5tR7JyQ0CA&steamid=76561199178368968&include_appinfo=true"
         );
         setGameData(response.data);
-        console.log(response.data.response.games);
       } catch (error: any) {
         setErrorGame(error);
       } finally {
@@ -56,18 +55,22 @@ export default function GameCard() {
     fetchGameData();
   }, []);
 
-  if (loadingUser) {
-    return (
-      <View style={styles.otherContainer}>
-        <Text style={styles.text}>加载中...</Text>
-      </View>
-    );
-  }
+  // 假设 errorUser 和 errorGame 都具有 message 属性
+  const errorMessageUser = errorUser && errorUser.message;
+  const errorMessageGame = errorGame && errorGame.message;
 
-  if (errorUser) {
+  // 合并加载中的状态
+  const isLoading = loadingUser || loadingGame;
+
+  // 合并错误信息
+  const errorMessages = [errorMessageUser, errorMessageGame].filter(Boolean); // 过滤掉假值（比如 null 或 undefined）
+
+  if (isLoading || errorMessages.length > 0) {
     return (
       <View style={styles.otherContainer}>
-        <Text style={styles.text}>{errorUser.message}</Text>
+        <Text style={styles.text}>
+          {isLoading ? "加载中..." : errorMessages.join("\n")}
+        </Text>
       </View>
     );
   }
