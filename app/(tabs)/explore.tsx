@@ -22,13 +22,13 @@ export default function Component() {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", flexDirection: 'row' }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", flexDirection: 'row', backgroundColor:"#fff" }}>
             <View
                 style={{
                     flexDirection: "row",
                     alignItems: "center",
                     width: "70%",
-                    backgroundColor: "#fff",
+                    backgroundColor: "#E6E6E6",
                     borderRadius: 20,
                     paddingVertical: 12,
                     paddingHorizontal: 16,
