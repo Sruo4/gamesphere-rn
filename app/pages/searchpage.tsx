@@ -40,22 +40,22 @@ export default function SearchPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${host}/data`);
+        const response = await axios.get(`${host}/data/all`);
         setResults(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     if (results) {
       handleSearch(initialSearchTerm);
     }
   }, [results]); // 依赖数组中加入results，当results变化时会重新执行这个effect
-  
+
 
   const handleFilterButtonClick = (buttonName) => {
     if (selectedButton === buttonName) {
@@ -93,10 +93,10 @@ export default function SearchPage() {
     handleSearch(searchTerm);
   };
 
-  const handleGamePress = (id) => {
+  const handleGamePress = (result) => {
     router.push({
       pathname: `/pages/gamedetail`,
-      params: { id: id },
+      params: { result: JSON.stringify(result) },
     });
   };
 
@@ -192,7 +192,7 @@ export default function SearchPage() {
           searchResults.map((result) => (
             <TouchableOpacity
               key={result.id}
-              onPress={() => handleGamePress(result.id)}
+              onPress={() => handleGamePress(result)}
             >
               <View
                 key={result.id}
@@ -255,7 +255,7 @@ export default function SearchPage() {
                         style={{
                           backgroundColor: "#FF9933",
                           borderRadius: 3,
-                          width: 33,
+                          width: 38,
                         }}
                       >
                         <Text
@@ -265,8 +265,11 @@ export default function SearchPage() {
                             fontWeight: "bold",
                           }}
                         >
-                          {result.score}
+                          {result.score === null
+                            ? "暂无"
+                            : result.score}
                         </Text>
+
                       </View>
                     </View>
                   </View>
