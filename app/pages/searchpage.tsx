@@ -23,7 +23,7 @@ export default function SearchPage() {
   const [selectedButton, setSelectedButton] = useState(null);
   const router = useRouter();
   const [results, setResults] = useState([]);
-  const host = "http://192.168.31.3:3000";
+  const host = "http://127.0.0.1:3000";
 
   const handleSearch = (value: React.SetStateAction<string>) => {
     setSearchTerm(value);
@@ -55,7 +55,6 @@ export default function SearchPage() {
       handleSearch(initialSearchTerm);
     }
   }, [results]); // 依赖数组中加入results，当results变化时会重新执行这个effect
-
 
   const handleFilterButtonClick = (buttonName) => {
     if (selectedButton === buttonName) {
@@ -265,11 +264,8 @@ export default function SearchPage() {
                             fontWeight: "bold",
                           }}
                         >
-                          {result.score === null
-                            ? "暂无"
-                            : result.score}
+                          {result.score === null ? "暂无" : result.score}
                         </Text>
-
                       </View>
                     </View>
                   </View>

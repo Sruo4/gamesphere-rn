@@ -12,11 +12,20 @@ import {
   Linking,
 } from "react-native";
 import { Card } from "react-native-paper";
+import { useRouter } from "expo-router";
 
 const Host = "http://127.0.0.1:3000";
 
-const GameCard = ({ game, style }: { game: any; style: any }) => {
+
+const GameCard = ({ game, style, router }: { game: any; style: any; router:any }) => {
   const [imageURL, setImageURL] = useState(null);
+
+  const handleGamePress = (result: any) => {
+    router.push({
+      pathname: `/pages/gamedetail`,
+      params: { result: JSON.stringify(result) },
+    });
+  };
 
   useEffect(() => {
     fetch(`https://store.steampowered.com/api/appdetails?appids=${game.appid}`)
@@ -35,7 +44,7 @@ const GameCard = ({ game, style }: { game: any; style: any }) => {
   }, [game.appid]);
 
   return (
-    <TouchableOpacity style={style}>
+    <TouchableOpacity style={style} onPress={() => handleGamePress(game)}>
       <Image
         source={{ uri: imageURL || game.image_link }}
         style={{ width: 160, height: 75, borderRadius: 12 }}
@@ -53,6 +62,7 @@ const GameCard = ({ game, style }: { game: any; style: any }) => {
 export default function HomeScreen() {
   const [hotList, setHotList] = useState([]);
   const [recommendList, setRecommendList] = useState([]);
+  const router = useRouter();
 
   const handlePress = () => {
     Linking.openURL("https://heishenhua.com/");
@@ -84,12 +94,14 @@ export default function HomeScreen() {
     fetchData();
   }, []);
 
+
+
   const renderHotGames = () => {
     // 只显示前5个游戏
     const hotGames = hotList
       .slice(0, 5)
       .map((game, index) => (
-        <GameCard key={index} game={game} style={styles.hotCard} />
+        <GameCard key={index} game={game} style={styles.hotCard} router={router} />
       ));
 
     return (
@@ -104,7 +116,7 @@ export default function HomeScreen() {
     const recommendGames = recommendList
       .slice(0, 5)
       .map((game, index) => (
-        <GameCard key={index} game={game} style={styles.recommendCard} />
+        <GameCard key={index} game={game} style={styles.recommendCard} router={router} />
       ));
 
     return (
