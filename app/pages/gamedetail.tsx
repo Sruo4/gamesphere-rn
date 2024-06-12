@@ -63,8 +63,8 @@ const GameDetail = () => {
                 </View>
                 <View style={{ width: 1, backgroundColor: '#BFBFBF', marginHorizontal: 5 }} />
                 <View style={{ flex: 2 }}>
-                    <Text>发行日期:</Text>
-                    <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginBottom: 20 }}>
+                    <Text style={{marginBottom:10}}>发行日期:</Text>
+                    <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: -10 }}>
                         <Text>{result.release_date}</Text>
                     </View>
                 </View>
@@ -79,7 +79,12 @@ const GameDetail = () => {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.priceButton} onPress={handlePress}>
                         <Text style={styles.priceButtonText}>
-                            {result.price === 0 ? "免费" : `￥${result.price}`}
+                            {result.price === 0 ? 
+                            "免费" 
+                            : result.price === null ?
+                             "暂无价格"
+                             : `¥${result.price}`
+                            }
                         </Text>
                     </TouchableOpacity>
                 </View>
