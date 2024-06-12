@@ -3,6 +3,7 @@ import { View, TextInput, Text, ScrollView, TouchableOpacity, Image, StyleSheet 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useRouter } from "expo-router";
+import axios from "axios";
 
 export default function SearchPage() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +14,36 @@ export default function SearchPage() {
     const initialSearchTerm = route.params?.searchTerm || "";
     const [selectedButton, setSelectedButton] = useState(null);
     const router = useRouter();
+    const [results, setResults] = useState([]);
+    const host = "http://192.168.31.3:3000";
+
+    const handleSearch = (value: React.SetStateAction<string>) => {
+        console.log("searching for: ", value);
+        setSearchTerm(value);
+
+        setSearchedGames(results.filter(game => {
+            return game.name.includes(value)})); // 将搜索结果保存到状态中
+        setSearchResults(results.filter(game => game.name.includes(value)));
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(
+              `${host}/data`
+            );
+            // console.log(response.data);
+            setResults(response.data);
+          } catch (error) {
+            console.error("Error fetching data: ", error);
+          }
+        };
+    
+        fetchData().then(() => {
+            console.log("initialSearchTerm: ", initialSearchTerm);
+            handleSearch(initialSearchTerm);
+          });
+      }, []);
 
     useEffect(() => {
         if (initialSearchTerm) {
@@ -21,118 +52,8 @@ export default function SearchPage() {
         }
     }, [initialSearchTerm]);
 
-    const handleSearch = (value: React.SetStateAction<string>) => {
-        setSearchTerm(value);
-        const results = [
-            {
-                id: 1,
-                title: "刺客信条",
-                score: 9.9,
-                price: 288,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 2,
-                title: "部落冲突",
-                score: 3.0,
-                price: 58,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 3,
-                title: "王者荣耀",
-                score: 5.5,
-                price: 25,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 4,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 5,
-                title: "炉石传说",
-                score: 8.0,
-                price: 199,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 6,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 7,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 8,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 9,
-                title: "我的世界",
-                score: 9.0,
-                price: 25,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 10,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 11,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 12,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 13,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 14,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-            {
-                id: 15,
-                title: "我的世界",
-                score: 9.0,
-                price: 0,
-                image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/capsule_sm_120_schinese.jpg?t=1716915649',
-            },
-        ];
-        setSearchedGames(results.filter(game => game.title.includes(value))); // 将搜索结果保存到状态中
-        setSearchResults(results.filter(game => game.title.includes(value)));
-    };
+
+    
 
     const handleFilterButtonClick = (buttonName) => {
         if (selectedButton === buttonName) {
@@ -233,9 +154,9 @@ export default function SearchPage() {
                     searchResults.map(result => (
                         <TouchableOpacity key={result.id} onPress={() => handleGamePress(result.id)}>
                             <View key={result.id} style={{ flexDirection: "row", padding: 6, backgroundColor: "#fff", marginBottom: 0 }}>
-                                <Image source={{ uri: result.image }} style={{ width: 120, height: 50, marginRight: 10, borderRadius: 8 }} />
+                                <Image source={{ uri: result.image_link }} style={{ width: 120, height: 50, marginRight: 10, borderRadius: 8 }} />
                                 <View style={{ flex: 1 }}>
-                                    <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 8 }}>{result.title}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 8 }}>{result.name}</Text>
                                     <View style={{ flexDirection: "row" }}>
                                         <View style={{ flex: 1, alignItems: "flex-start" }}>
                                             <View style={{ backgroundColor: "#DDDDDD", paddingHorizontal: 3, borderRadius: 3 }}>
@@ -247,7 +168,7 @@ export default function SearchPage() {
                                         <View style={{ flex: 1, alignItems: "flex-end", marginRight: 5 }}>
                                             <View style={{ backgroundColor: "#FF9933", borderRadius: 3, width: 33 }}>
                                                 <Text style={{ color: "white", textAlign: "center", fontWeight: "bold" }}>
-                                                    {result.score.toFixed(1)}
+                                                    {result.score}
                                                 </Text>
                                             </View>
                                         </View>
