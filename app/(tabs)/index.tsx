@@ -8,8 +8,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from "react-native";
 import { Card } from "react-native-paper";
+
+const handlePress = () => {
+  Linking.openURL("https://heishenhua.com/");
+};
 
 export default function HomeScreen() {
   return (
@@ -39,24 +44,24 @@ export default function HomeScreen() {
         <Button title="Press me" onPress={() => {}} />
       </View>
 
-      {/* 卡片 */}
+      {/* banner卡片 */}
       <View>
-        <Card style={styles.banner}>
-          <Card.Content>
-            <Text>这是一个卡片组件</Text>
-          </Card.Content>
+        <Card style={styles.banner} onPress={handlePress}>
+          <Image
+            source={require("../../assets/blackmyth-wukong.jpg")}
+            style={styles.bannerImage}
+          />
+          <Text style={styles.bannerText}>黑神话悟空开启预购</Text>
         </Card>
       </View>
 
       {/* Start分栏 */}
-      
-      
       <View style={styles.subfield}>
         <Text style={styles.largeText}>开始行动</Text>
         <Text style={styles.smallText}>探索一些正在流行的游戏</Text>
       </View>
 
-      <ScrollView horizontal={true} style={{ height: 192, width:343}}>
+      <ScrollView horizontal={true} style={{ height: 192, width: 343 }} showsHorizontalScrollIndicator={false} >
         <View style={{ flexDirection: "row", height: 10 }}>
           <TouchableOpacity style={styles.card}>
             <Text>免费</Text>
@@ -82,7 +87,7 @@ export default function HomeScreen() {
         <Text style={styles.smallText}>探索你可能喜欢的游戏</Text>
       </View>
 
-      <ScrollView horizontal={true} style={{ height: 100, width:343}}>
+      <ScrollView horizontal={true} style={{ height: 100, width: 343 }} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: "row", height: 10 }}>
           <TouchableOpacity style={styles.recommendCard}>
             <Text>免费</Text>
@@ -127,10 +132,24 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: 343,
-    height: 166,
+    height: 193,
     backgroundColor: "gray", // 改变背景颜色
-    borderWidth: 2, // 边框宽度
     borderRadius: 12, // 边框圆角
+  },
+  bannerImage: {
+    width: 343,
+    height: 193,
+    borderRadius: 12,
+  },
+  bannerText: {
+    position: "absolute",
+    bottom: 10, // 根据需要调整距离底部的距离
+    left: 10, // 根据需要调整距离左侧的距离
+    color: "white", // 文字颜色
+    fontSize: 18, // 文字大小
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // 半透明背景
+    padding: 5, // 内边距
+    borderRadius: 5,
   },
   subfield: {
     marginTop: 15,
@@ -153,13 +172,13 @@ const styles = StyleSheet.create({
     height: 192,
     backgroundColor: "gray",
     marginRight: 10,
-    borderRadius:12
+    borderRadius: 12,
   },
   recommendCard: {
     width: 231,
     height: 100,
     backgroundColor: "gray",
     marginRight: 10,
-    borderRadius:12
-  }
+    borderRadius: 12,
+  },
 });
