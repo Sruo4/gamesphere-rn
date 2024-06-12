@@ -42,7 +42,7 @@ export default function GameCard() {
         setLoadingGame(true);
         // 替换下面的URL为您的游戏数据API
         const response = await axios.get(
-          "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?access_token=eyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MEVFMF8yNDg5MzZFRl9GMDc3MyIsICJzdWIiOiAiNzY1NjExOTkxNzgzNjg5NjgiLCAiYXVkIjogWyAid2ViOnN0b3JlIiBdLCAiZXhwIjogMTcxODE3NDc3OCwgIm5iZiI6IDE3MDk0NDczOTcsICJpYXQiOiAxNzE4MDg3Mzk3LCAianRpIjogIjBFRjFfMjQ4OTM2RjNfRDFGOUQiLCAib2F0IjogMTcxODA4NzM5NywgInJ0X2V4cCI6IDE3MzYyMzIwMjcsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICIxMTguMTcwLjkyLjIzNyIsICJpcF9jb25maXJtZXIiOiAiMTE4LjE3MC45Mi4yMzciIH0.Eu_7FCT3ISoRAYtGIBHpWjZhoOb90IqboXosawfzDuzSZVkKg8FeoJipoxSQUUSR3Kl-xi-RemHA5tR7JyQ0CA&steamid=76561199178368968&include_appinfo=true"
+          "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=BA76C7CC18C59996DEA6C07A967E1D40&steamid=76561199178368968&include_appinfo=true"
         );
         setGameData(response.data);
       } catch (error: any) {
