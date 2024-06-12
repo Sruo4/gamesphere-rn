@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,11 +13,106 @@ import {
 } from "react-native";
 import { Card } from "react-native-paper";
 
-const handlePress = () => {
-  Linking.openURL("https://heishenhua.com/");
+const Host = "http://127.0.0.1:3000";
+
+const GameCard = ({ game, style }: { game: any; style: any }) => {
+  const [imageURL, setImageURL] = useState(null);
+
+  useEffect(() => {
+    fetch(`https://store.steampowered.com/api/appdetails?appids=${game.appid}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data[game.appid] && data[game.appid].success) {
+                    const headerImage = data[game.appid].data.header_image;
+                    setImageURL(headerImage);
+                } else {
+                    console.error("Failed to fetch data for app ID:", game.appid);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+  }, [game.appid]);
+
+  return (
+    <TouchableOpacity style={style}>
+      <Image
+        source={{ uri: imageURL || game.image_link }}
+        style={{ width: 160, height: 75, borderRadius: 12 }}
+      />
+      <Text style={styles.gameName}>{game.name}</Text>
+      <Text style={styles.gameName}>
+        {game.price === 0 ? "免费" : game.price}
+        评分：
+        {game.score ? game.score : "暂无"}
+      </Text>
+    </TouchableOpacity>
+  );
 };
 
 export default function HomeScreen() {
+  const [hotList, setHotList] = useState([]);
+  const [recommendList, setRecommendList] = useState([]);
+
+  const handlePress = () => {
+    Linking.openURL("https://heishenhua.com/");
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${Host}/data/hot`);
+        setHotList(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${Host}/data/recommend`);
+        setRecommendList(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const renderHotGames = () => {
+    // 只显示前5个游戏
+    const hotGames = hotList
+      .slice(0, 5)
+      .map((game, index) => (
+        <GameCard key={index} game={game} style={styles.hotCard} />
+      ));
+
+    return (
+      <ScrollView horizontal={true} style={styles.hotGamesContainer}>
+        {hotGames}
+      </ScrollView>
+    );
+  };
+
+  const renderRecommendGames = () => {
+    // 只显示前5个游戏
+    const recommendGames = recommendList
+      .slice(0, 5)
+      .map((game, index) => (
+        <GameCard key={index} game={game} style={styles.recommendCard} />
+      ));
+
+    return (
+      <ScrollView horizontal={true} style={styles.recommendGamesContainer}>
+        {recommendGames}
+      </ScrollView>
+    );
+  };
   return (
     <View style={styles.container}>
       {/* 搜索框 */}
@@ -59,53 +155,15 @@ export default function HomeScreen() {
       <View style={styles.subfield}>
         <Text style={styles.largeText}>开始行动</Text>
         <Text style={styles.smallText}>探索一些正在流行的游戏</Text>
+        {renderHotGames()}
       </View>
-
-      <ScrollView horizontal={true} style={{ height: 192, width: 343 }} showsHorizontalScrollIndicator={false} >
-        <View style={{ flexDirection: "row", height: 10 }}>
-          <TouchableOpacity style={styles.card}>
-            <Text>免费</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
-            <Text>￥0-50</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
-            <Text>￥50-100</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
-            <Text>￥100-200</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
-            <Text>￥200以上</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
 
       {/* Recommend 分栏 */}
       <View style={styles.subfield}>
         <Text style={styles.largeText}>为你推荐</Text>
         <Text style={styles.smallText}>探索你可能喜欢的游戏</Text>
+        {renderRecommendGames()}
       </View>
-
-      <ScrollView horizontal={true} style={{ height: 100, width: 343 }} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: "row", height: 10 }}>
-          <TouchableOpacity style={styles.recommendCard}>
-            <Text>免费</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.recommendCard}>
-            <Text>￥0-50</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.recommendCard}>
-            <Text>￥50-100</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.recommendCard}>
-            <Text>￥100-200</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.recommendCard}>
-            <Text>￥200以上</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
     </View>
   );
 }
@@ -167,18 +225,33 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "regular",
   },
-  card: {
-    width: 173,
-    height: 192,
-    backgroundColor: "gray",
+
+  hotGamesContainer: {
+    height: 160,
+    width: 343,
+    marginTop: 10,
+  },
+  recommendGamesContainer: {
+    height: 160,
+    width: 343,
+    marginTop: 10,
+  },
+  hotCard: {
+    width: 160,
+    height: 100,
     marginRight: 10,
     borderRadius: 12,
   },
   recommendCard: {
-    width: 231,
+    width: 160,
     height: 100,
-    backgroundColor: "gray",
     marginRight: 10,
     borderRadius: 12,
+  },
+  gameName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+    color: "black",
   },
 });
