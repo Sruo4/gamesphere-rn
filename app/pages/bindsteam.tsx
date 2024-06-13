@@ -7,7 +7,7 @@ export default function BindSteam() {
     const [steamId, setSteamId] = useState("");
     const [apiKey, setApiKey] = useState("");
     const navigation = useNavigation();
-    const host = "http://192.168.233.242:3000";
+    const host = "http://127.0.0.1:3000";
     const uuid = 1;
 
     const handleSubmit = async () => {

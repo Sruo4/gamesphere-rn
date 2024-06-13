@@ -6,8 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 const ModifyProfileScreen = () => {
     const [brief, setBrief] = useState('');
     const navigation = useNavigation();
-    const host = "http://192.168.233.242:3000";
-    const uuid = 1;
+    const host = "http://127.0.0.1:3000";
+    const uuid = "ce7a158e-c48f-4867-a3af-750c776d49d7";
 
     const handleConfirm = async () => {
         try {
@@ -21,6 +21,7 @@ const ModifyProfileScreen = () => {
 
             // 获取响应的状态码
             const statusCode = response.status;
+            console.log(statusCode);
 
             if (statusCode === 200) {
                 alert("简介修改成功");
@@ -29,6 +30,7 @@ const ModifyProfileScreen = () => {
                 alert("修改失败");
             } else {
                 // 解析响应文本为JSON对象
+                console.log(response);
                 const data = JSON.parse(responseText);
                 alert(`修改失败: ${data.message}`);
             }

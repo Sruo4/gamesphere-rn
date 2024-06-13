@@ -23,7 +23,7 @@ export default function SearchPage() {
   const [selectedButton, setSelectedButton] = useState(null);
   const router = useRouter();
   const [results, setResults] = useState([]);
-  const host = "http://192.168.233.242:3000";
+  const host = "http://127.0.0.1:3000";
 
   const handleSearch = (value: React.SetStateAction<string>) => {
     setSearchTerm(value);
