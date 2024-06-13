@@ -237,9 +237,12 @@ export default function SearchPage() {
                             fontWeight: "bold",
                           }}
                         >
-                          {result.price === 0
+                          {result.price == 0
                             ? "免费"
-                            : `￥${Math.round(result.price)}`}
+                            : result.price === null
+                            ? "暂无"
+                            : `￥${result.price}`
+                            }
                         </Text>
                       </View>
                     </View>

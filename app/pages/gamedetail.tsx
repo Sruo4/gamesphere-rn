@@ -79,6 +79,7 @@ const GameDetail = () => {
               fontWeight: "bold",
               fontSize: 22,
               marginLeft: -44,
+              maxWidth: 200,
             }}
           >
             {result.name}

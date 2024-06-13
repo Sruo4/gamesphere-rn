@@ -16,8 +16,15 @@ import { useRouter } from "expo-router";
 
 const Host = "http://127.0.0.1:3000";
 
-
-const GameCard = ({ game, style, router }: { game: any; style: any; router:any }) => {
+const GameCard = ({
+  game,
+  style,
+  router,
+}: {
+  game: any;
+  style: any;
+  router: any;
+}) => {
   const [imageURL, setImageURL] = useState(null);
 
   const handleGamePress = (result: any) => {
@@ -29,18 +36,18 @@ const GameCard = ({ game, style, router }: { game: any; style: any; router:any }
 
   useEffect(() => {
     fetch(`https://store.steampowered.com/api/appdetails?appids=${game.appid}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data[game.appid] && data[game.appid].success) {
-                    const headerImage = data[game.appid].data.header_image;
-                    setImageURL(headerImage);
-                } else {
-                    console.error("Failed to fetch data for app ID:", game.appid);
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data[game.appid] && data[game.appid].success) {
+          const headerImage = data[game.appid].data.header_image;
+          setImageURL(headerImage);
+        } else {
+          console.error("Failed to fetch data for app ID:", game.appid);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, [game.appid]);
 
   return (
@@ -51,7 +58,7 @@ const GameCard = ({ game, style, router }: { game: any; style: any; router:any }
       />
       <Text style={styles.gameName}>{game.name}</Text>
       <Text style={styles.gameName}>
-        {game.price === 0 ? "免费" : game.price}
+        {game.price == 0 ? "免费" : game.price === null ? "暂无" : game.price}
         评分：
         {game.score ? game.score : "暂无"}
       </Text>
@@ -94,14 +101,17 @@ export default function HomeScreen() {
     fetchData();
   }, []);
 
-
-
   const renderHotGames = () => {
     // 只显示前5个游戏
     const hotGames = hotList
       .slice(0, 5)
       .map((game, index) => (
-        <GameCard key={index} game={game} style={styles.hotCard} router={router} />
+        <GameCard
+          key={index}
+          game={game}
+          style={styles.hotCard}
+          router={router}
+        />
       ));
 
     return (
@@ -116,7 +126,12 @@ export default function HomeScreen() {
     const recommendGames = recommendList
       .slice(0, 5)
       .map((game, index) => (
-        <GameCard key={index} game={game} style={styles.recommendCard} router={router} />
+        <GameCard
+          key={index}
+          game={game}
+          style={styles.recommendCard}
+          router={router}
+        />
       ));
 
     return (
@@ -131,7 +146,7 @@ export default function HomeScreen() {
       <View
         style={{
           flexDirection: "row",
-          alignItems: "center",
+          width: 343,
           justifyContent: "space-between",
           marginBottom: 10,
         }}
@@ -144,12 +159,12 @@ export default function HomeScreen() {
             }}
           />
         </TouchableOpacity>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="请输入内容"
           // 您可以添加更多的属性，如 onChangeText, value 等
-        />
-        <Button title="Press me" onPress={() => {}} />
+        /> */}
+        <Button title="设置" onPress={() => {}} />
       </View>
 
       {/* banner卡片 */}
