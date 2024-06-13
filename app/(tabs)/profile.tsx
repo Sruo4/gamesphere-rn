@@ -10,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import GameCard from "../../components/GameCard";
 import { AuthContext } from "../../app/context/AuthContext"; // 引入AuthContext
+import { router } from "expo-router";
 
 export default function Profile() {
   const [darkMode, setDarkMode] = React.useState(false);
@@ -64,9 +65,8 @@ export default function Profile() {
       <GameCard />
 
       <View style={styles.list}>
-      <ListItem icon="globe" title="绑定steam" />
-        <ListItem icon="trophy" title="成就（）" />
-        <ListItem icon="edit" title="修改信息" />
+      <ListItem icon="globe" title="绑定steam" onPress={() => router.push(`/pages/bindsteam`)} />
+        <ListItem icon="edit" title="修改信息" onPress={() => router.push(`/pages/modifyprofile`)}/>
         <ListItem icon="cog" title="设置()" />
         <ListItem icon="moon-o" title="退出登录"  />
       </View>
