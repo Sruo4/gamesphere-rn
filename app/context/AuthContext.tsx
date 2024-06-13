@@ -9,6 +9,9 @@ type AuthState = {
   showPassword: boolean;
   showConfirmPassword: boolean;
   isLoggedIn: boolean;
+  brief: string;
+  steamid: string;
+  key: string;
 };
 
 // 定义 AuthAction 类型
@@ -19,7 +22,10 @@ type AuthAction =
   | { type: 'TOGGLE_SHOW_PASSWORD' }
   | { type: 'TOGGLE_SHOW_CONFIRM_PASSWORD' }
   | { type: 'LOGIN' }
-  | { type: 'LOGOUT' };
+  | { type: 'LOGOUT' }
+  | { type: 'SET_BRIEF'; payload: string }
+  | { type: 'SET_STEAMID'; payload: string }
+  | { type: 'SET_KEY'; payload: string };
 
 // 初始状态
 const initialState: AuthState = {
@@ -29,6 +35,9 @@ const initialState: AuthState = {
   showPassword: false,
   showConfirmPassword: false,
   isLoggedIn: false,
+  brief: '',
+  steamid: '',
+  key: '',
 };
 
 // Reducer 函数
@@ -48,6 +57,12 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return { ...state, isLoggedIn: true };
     case 'LOGOUT':
       return { ...state, isLoggedIn: false };
+    case 'SET_BRIEF':
+      return { ...state, brief: action.payload };
+    case 'SET_STEAMID':
+      return { ...state, steamid: action.payload };
+    case 'SET_KEY':
+      return { ...state, key: action.payload };
     default:
       return state;
   }
