@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import GameCard from "../../components/GameCard";
+import { AuthContext } from "../../app/context/AuthContext"; // 引入AuthContext
 
 export default function Profile() {
   const [darkMode, setDarkMode] = React.useState(false);
+  const { state } = useContext(AuthContext); // 使用useContext获取上下文状态
 
   const toggleSwitch = () => setDarkMode((previousState) => !previousState);
 
@@ -54,8 +56,8 @@ export default function Profile() {
           />
         </TouchableOpacity>
         <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-          <Text style={styles.profileName}>Sruo</Text>
-          <Text style={styles.brief}>不想写简介，啦啦啦</Text>
+          <Text style={styles.profileName}>{state.username}</Text>
+          <Text style={styles.brief}>{state.brief}</Text>
         </View>
       </View>
 

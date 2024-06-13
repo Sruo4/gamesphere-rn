@@ -23,7 +23,7 @@ export default function LoginPage() {
     // 处理登录逻辑，点击登录时才将本地状态更新到 context
     console.log("Logging in with", localUsername, localPassword);
 
-    fetch("http://127.0.0.1:3000/login", {
+    fetch("http://192.168.233.242:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,10 +45,36 @@ export default function LoginPage() {
             type: "SET_PASSWORD",
             payload: localPassword,
           });
-          authContext.dispatch({ type: "LOGIN" });
-          // 跳转到首页
-          console.log("Login success");
-          router.replace('/');
+          // // 请求获取用户相关信息
+          // fetch("http://192.168.233.242:3000/user/profile", {
+          //   method: "GET",
+          //   headers: {
+          //     Authorization: `Bearer ${data.token}`, // 假设登录接口返回了 token
+          //   },
+          // })
+          //   .then((response) => response.json())
+          //   .then((profileData) => {
+          //     console.log("Profile data:", profileData);
+          //     authContext.dispatch({
+          //       type: "SET_BRIEF",
+          //       payload: profileData.brief, // 假设简介信息在 profileData 的 brief 字段中
+          //     });
+          //     authContext.dispatch({
+          //       type: "SET_STEAMID",
+          //       payload: profileData.steamid, // 假设 Steam ID 信息在 profileData 的 steamid 字段中
+          //     });
+          //     authContext.dispatch({
+          //       type: "SET_KEY",
+          //       payload: profileData.key, // 假设 API Key 信息在 profileData 的 key 字段中
+          //     });
+              authContext.dispatch({ type: "LOGIN" });
+              console.log("Login success");
+              router.replace('/');
+            // })
+            // .catch((profileError) => {
+            //   console.error("Error fetching profile:", profileError);
+            //   alert("Failed to fetch profile information");
+            // });
         } else {
           alert("Login failed");
         }
