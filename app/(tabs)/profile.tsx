@@ -62,12 +62,11 @@ export default function Profile() {
       <GameCard />
 
       <View style={styles.list}>
-        <ListItem icon="trophy" title="成就" />
-        <ListItem icon="edit" title="编辑简介" />
-        <ListItem icon="credit-card" title="付款方式" />
-        <ListItem icon="cog" title="设置" />
-        <ListItem icon="moon-o" title="黑暗模式" hasSwitch />
-        <ListItem icon="globe" title="语言" />
+      <ListItem icon="globe" title="绑定steam" />
+        <ListItem icon="trophy" title="成就（）" />
+        <ListItem icon="edit" title="修改信息" />
+        <ListItem icon="cog" title="设置()" />
+        <ListItem icon="moon-o" title="退出登录"  />
       </View>
     </View>
   );

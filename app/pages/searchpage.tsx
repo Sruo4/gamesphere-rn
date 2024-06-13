@@ -66,7 +66,7 @@ export default function SearchPage() {
     setSelectedButton(buttonName);
     let filteredResults = [];
     if (buttonName === "免费") {
-      filteredResults = searchedGames.filter((game) => game.price === 0);
+      filteredResults = searchedGames.filter((game) => game.price == 0);
     } else if (buttonName === "￥0-50") {
       filteredResults = searchedGames.filter(
         (game) => game.price > 0 && game.price <= 50
