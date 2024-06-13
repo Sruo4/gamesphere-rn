@@ -32,6 +32,8 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="pages/searchpage" options={{ headerShown: false}}/>
         <Stack.Screen name="pages/gamedetail" options={{ headerShown: false}}/>
+        <Stack.Screen name="pages/bindsteam" options={{ headerShown: false}}/>
+        <Stack.Screen name="pages/modifyprofile" options={{ headerShown: false}}/>
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
