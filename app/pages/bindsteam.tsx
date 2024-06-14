@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../app/context/AuthContext"; // 引入AuthContext
 
 export default function BindSteam() {
     const [steamId, setSteamId] = useState("");
     const [apiKey, setApiKey] = useState("");
     const navigation = useNavigation();
-    const host = "http://127.0.0.1:3000";
-    const uuid = 1;
+    const host = "http://172.20.10.2:3000";
+    const { state } = useContext(AuthContext);
+    const uuid = state.uuid;
 
     const handleSubmit = async () => {
         try {
@@ -30,10 +32,10 @@ export default function BindSteam() {
                 alert("绑定出错");
             } else {
                 // 解析响应文本为JSON对象
-                const data = JSON.parse(responseText);
+                const data = JSON.parse(response);
                 alert(`绑定失败: ${data.message}`);
             }
-        } catch (error) {
+        } catch (error: any) {
             alert(`请求失败: ${error.message}`);
         }
     };

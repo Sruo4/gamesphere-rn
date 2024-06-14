@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import axios from "axios";
+import { AuthContext } from "../app/context/AuthContext"; // 引入AuthContext
 
 export function formatTimestamp(timestamp: number) {
   const date = new Date(timestamp * 1000);
@@ -10,6 +11,7 @@ export function formatTimestamp(timestamp: number) {
 export default function GameCard() {
   const [userData, setUserData] = useState<any>({}); // 用于存储用户数据
   const [gameData, setGameData] = useState<any>({}); // 用于存储游戏数据
+  const { state } = useContext(AuthContext); // 使用useContext获取上下文状态
   // 分别存储两组数据的加载状态和错误状态
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingGame, setLoadingGame] = useState(true);
@@ -22,7 +24,7 @@ export default function GameCard() {
       try {
         setLoadingUser(true);
         const response = await axios.get(
-          "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=B75735CD1D7ACA56D22DE86355FCD9AE&steamids=%7B76561199178368968%7D"
+          `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${state.key}&steamids=${state.steamid}`
         );
         setUserData(response.data.response.players[0]);
       } catch (error: any) {
@@ -42,7 +44,7 @@ export default function GameCard() {
         setLoadingGame(true);
         // 替换下面的URL为您的游戏数据API
         const response = await axios.get(
-          "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=BA76C7CC18C59996DEA6C07A967E1D40&steamid=76561199178368968&include_appinfo=true"
+          `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${state.key}&steamid=${state.steamid}&include_appinfo=true`
         );
         setGameData(response.data);
       } catch (error: any) {
@@ -54,7 +56,6 @@ export default function GameCard() {
 
     fetchGameData();
   }, []);
-
   // 假设 errorUser 和 errorGame 都具有 message 属性
   const errorMessageUser = errorUser && errorUser.message;
   const errorMessageGame = errorGame && errorGame.message;

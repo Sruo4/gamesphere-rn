@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import { Card } from "react-native-paper";
 import { useRouter } from "expo-router";
-
-const Host = "http://127.0.0.1:3000";
+const Host = "http://172.20.10.2:3000";
 
 const GameCard = ({
   game,

@@ -9,8 +9,10 @@ import {
 import { AuthContext } from "../context/AuthContext";
 import { useRouter } from "expo-router";
 
+const Host = "http://172.20.10.2:3000";
+
 export default function LoginPage() {
-    const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
   const [localUsername, setLocalUsername] = useState("");
   const [localPassword, setLocalPassword] = useState("");
   const authContext = useContext(AuthContext);
@@ -24,7 +26,7 @@ export default function LoginPage() {
     // 处理登录逻辑，点击登录时才将本地状态更新到 context
     console.log("Logging in with", localUsername, localPassword);
 
-    fetch("http://127.0.0.1:3000/login", {
+    fetch(`${Host}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,6 +40,9 @@ export default function LoginPage() {
       .then((data) => {
         console.log("Login response:", data);
         if (data.success) {
+          authContext.dispatch({ type: "LOGIN" });
+          console.log("Login success");
+          router.replace("/");
           authContext.dispatch({
             type: "SET_USERNAME",
             payload: localUsername,
@@ -47,7 +52,7 @@ export default function LoginPage() {
             payload: localPassword,
           });
           // 请求获取用户相关信息
-          fetch(`http://127.0.0.1:3000/user/${localUsername}`, {
+          fetch(`${Host}/user/${localUsername}`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${data.token}`, // 假设登录接口返回了 token
@@ -68,9 +73,7 @@ export default function LoginPage() {
                 type: "SET_KEY",
                 payload: profileData[0].key, // 假设 API Key 信息在 profileData 的 key 字段中
               });
-              authContext.dispatch({ type: "LOGIN" });
-              console.log("Login success");
-              router.replace('/');
+
             })
             .catch((profileError) => {
               console.error("Error fetching profile:", profileError);
@@ -89,7 +92,7 @@ export default function LoginPage() {
     // 处理注册逻辑
     console.log("Registering with", localUsername, localPassword);
 
-    fetch("http://127.0.0.1:3000/register", {
+    fetch(`${Host}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,8 +119,8 @@ export default function LoginPage() {
   };
 
   return (
-        <View style={styles.container}>
-      <Text style={styles.title}>{isLogin ? '登录' : '注册'}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{isLogin ? "登录" : "注册"}</Text>
 
       <TextInput
         style={styles.input}
@@ -134,13 +137,21 @@ export default function LoginPage() {
         secureTextEntry={!authContext.state.showPassword}
       />
 
-      <TouchableOpacity style={styles.loginButton} onPress={isLogin ? handleLogin : handleRegister}>
-        <Text style={styles.loginText}>{isLogin ? '登录' : '注册'}</Text>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={isLogin ? handleLogin : handleRegister}
+      >
+        <Text style={styles.loginText}>{isLogin ? "登录" : "注册"}</Text>
       </TouchableOpacity>
 
       {/* 切换到注册表单的按钮 */}
-      <TouchableOpacity style={styles.registerButton} onPress={() => setIsLogin(!isLogin)}>
-        <Text style={styles.registerText}>{isLogin ? '去注册' : '返回登录'}</Text>
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={() => setIsLogin(!isLogin)}
+      >
+        <Text style={styles.registerText}>
+          {isLogin ? "去注册" : "返回登录"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -192,14 +203,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-    registerButton: {
-        paddingVertical: 15,
-        borderRadius: 5,
-        alignItems: "center",
-    },
-    registerText: {
-        color: "#4A44F2",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
+  registerButton: {
+    paddingVertical: 15,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  registerText: {
+    color: "#4A44F2",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
