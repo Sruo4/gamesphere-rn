@@ -3,6 +3,7 @@ import React, { createContext, useReducer, ReactNode } from 'react';
 
 // 定义 AuthState 类型
 type AuthState = {
+  uuid: string;
   username: string;
   password: string;
   confirmPassword: string;
@@ -16,6 +17,7 @@ type AuthState = {
 
 // 定义 AuthAction 类型
 type AuthAction =
+  | { type: 'SET_UUID'; payload: string }
   | { type: 'SET_USERNAME'; payload: string }
   | { type: 'SET_PASSWORD'; payload: string }
   | { type: 'SET_CONFIRM_PASSWORD'; payload: string }
@@ -29,6 +31,7 @@ type AuthAction =
 
 // 初始状态
 const initialState: AuthState = {
+  uuid: '',
   username: '',
   password: '',
   confirmPassword: '',
@@ -43,6 +46,8 @@ const initialState: AuthState = {
 // Reducer 函数
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
+    case 'SET_UUID':
+      return { ...state, uuid: action.payload };
     case 'SET_USERNAME':
       return { ...state, username: action.payload };
     case 'SET_PASSWORD':

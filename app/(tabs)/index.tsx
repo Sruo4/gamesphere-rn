@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Button,
   Image,
   StyleSheet,
@@ -13,7 +12,7 @@ import {
 } from "react-native";
 import { Card } from "react-native-paper";
 import { useRouter } from "expo-router";
-const Host = "http://172.20.10.2:3000";
+import { Host } from "@/constants/Config";
 
 const GameCard = ({
   game,
