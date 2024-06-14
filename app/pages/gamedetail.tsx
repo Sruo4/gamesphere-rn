@@ -29,6 +29,7 @@ const GameDetail = () => {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log("Data fetched:", 222222);
         if (data && data[result.appid] && data[result.appid].success) {
           const headerImage = data[result.appid].data.header_image;
           setHeaderImage(headerImage);
@@ -37,6 +38,7 @@ const GameDetail = () => {
         }
       })
       .catch((error) => {
+
         console.error("Error fetching data:", error);
       });
   }, [result.appid]);

@@ -56,11 +56,23 @@ const GameCard = ({
         style={{ width: 160, height: 75, borderRadius: 12 }}
       />
       <Text style={styles.gameName}>{game.name}</Text>
-      <Text style={styles.gameName}>
-        {game.price == 0 ? "免费" : game.price === null ? "暂无" : game.price}
-        评分：
-        {game.score ? game.score : "暂无"}
-      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.price}>
+          {game.price == 0
+            ? "免费"
+            : game.price === null
+            ? "暂无"
+            : `¥${game.price}`}
+        </Text>
+        <Text style={styles.score}>
+          ☆{game.score ? game.score : "暂无"}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -280,5 +292,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginHorizontal: 5,
     color: "black",
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#1F3F60",
+  },
+  score: {
+    fontSize: 18,
+    color: "purple",
+    marginLeft: 10,
   },
 });

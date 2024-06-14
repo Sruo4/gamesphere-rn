@@ -17,6 +17,7 @@ const ModifyProfileScreen = () => {
   
 
   const { state } = useContext(AuthContext); // 使用useContext获取上下文状态
+  const authContext = useContext(AuthContext);
   const uuid = state.uuid; // 从上下文状态中获取uuid
 
   const handleConfirm = async () => {
@@ -35,27 +36,25 @@ const ModifyProfileScreen = () => {
 
       if (statusCode === 200) {
         alert("简介修改成功");
-        state.dispatch({
+        console.log("简介修改成功");
+        authContext.dispatch({
             type: "SET_BRIEF",
             payload: brief,
           });
         navigation.goBack();
       } else if (statusCode === 500) {
         alert("修改失败");
+        console.log("修改失败");
       } else {
         // 解析响应文本为JSON对象
         console.log(response);
+        console.log(response.text());
         const data = JSON.parse(response);
         alert(`修改失败: ${data.message}`);
       }
     } catch (error: any) {
       alert(`请求失败: ${error.message}`);
     }
-  };
-
-  // 处理返回按钮的逻辑
-  const handleBack = () => {
-    navigation.goBack(); // 返回上一个页面
   };
 
   return (
