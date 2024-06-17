@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { useRouter } from "expo-router";
+import { Host } from "@/constants/Config";
 
-const Host = "http://172.20.10.2:3000";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -60,7 +60,6 @@ export default function LoginPage() {
           })
             .then((response) => response.json())
             .then((profileData) => {
-              console.log("Profile data:", profileData);
               authContext.dispatch({
                 type: "SET_BRIEF",
                 payload: profileData[0].bio, // 假设简介信息在 profileData 的 brief 字段中
@@ -73,7 +72,10 @@ export default function LoginPage() {
                 type: "SET_KEY",
                 payload: profileData[0].key, // 假设 API Key 信息在 profileData 的 key 字段中
               });
-
+              authContext.dispatch({
+                type: "SET_UUID",
+                payload: profileData[0].uuid, // 假设 UUID 信息在 profileData 的 uuid 字段中
+              });
             })
             .catch((profileError) => {
               console.error("Error fetching profile:", profileError);

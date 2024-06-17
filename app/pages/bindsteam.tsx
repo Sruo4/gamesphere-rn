@@ -3,18 +3,21 @@ import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "rea
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../app/context/AuthContext"; // 引入AuthContext
+import { Host } from "@/constants/Config";
 
 export default function BindSteam() {
     const [steamId, setSteamId] = useState("");
     const [apiKey, setApiKey] = useState("");
     const navigation = useNavigation();
-    const host = "http://172.20.10.2:3000";
-    const { state } = useContext(AuthContext);
+    const { state, dispatch } = useContext(AuthContext);
+    if (!state) {
+        throw new Error("LoginScreen must be used within an AuthProvider");
+    }
     const uuid = state.uuid;
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`${host}/bind-steam`, {
+            const response = await fetch(`${Host}/bind-steam`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,6 +29,14 @@ export default function BindSteam() {
             const statusCode = response.status;
 
             if (statusCode === 200) {
+                dispatch({
+                    type: "SET_STEAMID",
+                    payload: steamId,
+                });
+                dispatch({
+                    type: "SET_KEY",
+                    payload: apiKey,
+                });
                 alert("Steam绑定成功");
                 navigation.goBack();
             } else if (statusCode === 500) {

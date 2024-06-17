@@ -8,21 +8,20 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "../../app/context/AuthContext"; // 引入AuthContext
+import { AuthContext } from "../context/AuthContext";
+import { Host } from "@/constants/Config";
 
 const ModifyProfileScreen = () => {
   const [brief, setBrief] = useState("");
   const navigation = useNavigation();
-  const host = "http://172.20.10.2:3000";
-  
 
-  const { state } = useContext(AuthContext); // 使用useContext获取上下文状态
+  const { state, dispatch } = useContext(AuthContext); // 使用useContext获取上下文状态
   const authContext = useContext(AuthContext);
   const uuid = state.uuid; // 从上下文状态中获取uuid
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch(`${host}/modify-profile`, {
+      const response = await fetch(`${Host}/modify-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,15 +31,13 @@ const ModifyProfileScreen = () => {
 
       // 获取响应的状态码
       const statusCode = response.status;
-      console.log(statusCode);
 
       if (statusCode === 200) {
+        dispatch({
+          type: "SET_BRIEF",
+          payload: brief,
+        });
         alert("简介修改成功");
-        console.log("简介修改成功");
-        authContext.dispatch({
-            type: "SET_BRIEF",
-            payload: brief,
-          });
         navigation.goBack();
       } else if (statusCode === 500) {
         alert("修改失败");

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,9 +14,24 @@ import { router } from "expo-router";
 
 export default function Profile() {
   const [darkMode, setDarkMode] = React.useState(false);
-  const { state } = useContext(AuthContext); // 使用useContext获取上下文状态
+  const { state, dispatch } = useContext(AuthContext); // 使用useContext获取上下文状态
+  const [count, setCount] = useState(0); // 用于强制刷新 GameCard
+
+  useEffect(() => {
+    setCount(count => count + 1); // 每次 state 更新时，改变 key 的值
+  }, [state.steamid, state.key]);
 
   const toggleSwitch = () => setDarkMode((previousState) => !previousState);
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    dispatch({ type: "SET_UUID", payload: "" });
+    dispatch({ type: "SET_USERNAME", payload: "" });
+    dispatch({ type: "SET_PASSWORD", payload: "" });
+    dispatch({ type: "SET_BRIEF", payload: "" });
+    dispatch({ type: "SET_STEAMID", payload: "" });
+    dispatch({ type: "SET_KEY", payload: "" });
+  }
 
   const ListItem = ({
     icon,
@@ -62,13 +77,13 @@ export default function Profile() {
         </View>
       </View>
 
-      <GameCard />
+      <GameCard key={count} />
 
       <View style={styles.list}>
-      <ListItem icon="globe" title="绑定steam" onPress={() => router.push(`/pages/bindsteam`)} />
-        <ListItem icon="edit" title="修改信息" onPress={() => router.push(`/pages/modifyprofile`)}/>
+        <ListItem icon="globe" title="绑定steam" onPress={() => router.push(`/pages/bindsteam`)} />
+        <ListItem icon="edit" title="修改信息" onPress={() => router.push(`/pages/modifyprofile`)} />
         <ListItem icon="cog" title="设置()" />
-        <ListItem icon="moon-o" title="退出登录"  />
+        <ListItem icon="moon-o" title="退出登录" onPress={() => handleLogout()} />
       </View>
     </View>
   );

@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import axios from "axios";
+import { Host } from "@/constants/Config";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +24,6 @@ export default function SearchPage() {
   const [selectedButton, setSelectedButton] = useState(null);
   const router = useRouter();
   const [results, setResults] = useState([]);
-  const host = "http://172.20.10.2:3000";
 
   const handleSearch = (value: React.SetStateAction<string>) => {
     setSearchTerm(value);
@@ -40,7 +40,7 @@ export default function SearchPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${host}/data/all`);
+        const response = await axios.get(`${Host}/data/all`);
         setResults(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
