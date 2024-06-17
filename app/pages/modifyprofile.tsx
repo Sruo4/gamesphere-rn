@@ -16,7 +16,6 @@ const ModifyProfileScreen = () => {
   const navigation = useNavigation();
 
   const { state, dispatch } = useContext(AuthContext); // 使用useContext获取上下文状态
-  const authContext = useContext(AuthContext);
   const uuid = state.uuid; // 从上下文状态中获取uuid
 
   const handleConfirm = async () => {
